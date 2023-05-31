@@ -189,38 +189,13 @@
   overflow: hidden;
   max-height: 100%;
 }
-.askMeAnything {
-  flex: 1;
-  position: relative;
-  line-height: 22px;
-  display: inline-block;
-  height: 25px;
-  z-index: 0;
-}
-.microphoneonIcon,
-.vuesaxlinearmicrophone2 {
-  position: absolute;
-  margin: 0 !important;
-  top: 37px;
-  left: 259px;
-  width: 24px;
-  height: 24px;
-  z-index: 1;
-}
-.microphoneonIcon {
-  width: 11.68%;
-  top: 11px;
-  right: 6.21%;
-  left: 82.11%;
-  max-width: 100%;
-  overflow: hidden;
-  height: 38px;
-  z-index: 2;
-}
-.askMeAnythingParent {
+.frameChild {
+  border: 0;
+  font-family: var(--font-rubik);
+  font-size: var(--font-size-mid);
+  background-color: var(--others-text-bg);
   flex: 1;
   border-radius: 30px;
-  background-color: var(--others-text-bg);
   box-shadow: 5px 4px 20px rgba(0, 0, 0, 0.13);
   height: 64px;
   display: flex;
@@ -229,10 +204,34 @@
   box-sizing: border-box;
   align-items: center;
   justify-content: flex-start;
-  position: relative;
-  gap: 10px;
 }
-.sendIcon {
+.vectorIcon1,
+.vectorIcon2 {
+  position: absolute;
+  height: 74.99%;
+  width: 67.74%;
+  top: 9.09%;
+  right: 0;
+  bottom: 15.92%;
+  left: 32.26%;
+  max-width: 100%;
+  overflow: hidden;
+  max-height: 100%;
+}
+.vectorIcon2 {
+  height: 100%;
+  width: 90.82%;
+  top: 108.18%;
+  right: -659.94%;
+  bottom: -108.18%;
+  left: 669.12%;
+  opacity: 0;
+}
+.send {
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  background-color: transparent;
   position: relative;
   width: 48.47px;
   height: 55px;
@@ -248,7 +247,6 @@
   align-items: center;
   justify-content: flex-start;
   gap: 11px;
-  color: var(--others-grey-01);
 }
 .questionPage {
   position: relative;
@@ -257,7 +255,7 @@
   height: 812px;
   overflow: hidden;
   text-align: left;
-  font-size: var(--app-body-size);
+  font-size: var(--font-size-mid);
   color: var(--typography-body);
-  font-family: var(--app-body);
+  font-family: var(--font-rubik);
 }
