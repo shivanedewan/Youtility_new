@@ -1,8 +1,10 @@
 import styles from "./Home.module.css";
-// import GoogleLoginButton from "./GoogleLoginButton";
+import GoogleLoginButton from "./GoogleLoginButton";
+import { GoogleOAuthProvider, Google } from '@react-oauth/google';
 
 const Home = () => {
   return (
+    <GoogleOAuthProvider clientId="890593488111-o10mtf4ka43e97vdnntv1cev714ipo64.apps.googleusercontent.com">
     <div className={styles.home}>
       <div className={styles.yourYoutubeAiAssistantWrapper}>
         <b className={styles.yourYoutubeAiContainer}>
@@ -17,18 +19,13 @@ const Home = () => {
           to providing recommendations. We just need to access your google
           account to get going
         </div>
-        <a href="questionPage">
-        <img
-          className={styles.btnGoogleSigninLightNormalIcon}
-          alt=""
-          src="/btn-google-signin-light-normal-web@2x.png"
-        />
-         </a>
-        {/* <GoogleLoginButton /> */}
+       
+        <GoogleLoginButton />
       </div>
       <img className={styles.userCirleIcon} alt="" src="/usercirle.svg" />
       <img className={styles.iconfillmenu} alt="" src="/iconfillmenu1.svg" />
     </div>
+    </GoogleOAuthProvider>
   );
 };
 
