@@ -228,9 +228,9 @@
   padding: 0 37px 0 22px;
   box-sizing: border-box;
   align-items: center;
-  justify-content: flex-start;
   position: relative;
   gap: 10px;
+  text-align: center;
 }
 .sendIcon {
   position: relative;
@@ -260,4 +260,9 @@
   font-size: var(--app-body-size);
   color: var(--typography-body);
   font-family: var(--app-body);
+}
+
+.conversationContainer {
+  height: 400px; /* Adjust the height as per your requirement */
+  overflow-y: auto;
 }

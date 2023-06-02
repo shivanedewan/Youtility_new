@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { GoogleLogin } from '@react-oauth/google';
+import { GoogleLogin } from 'react-google-login';
 import { Button } from '@mui/material';
 import httpRequest from '../services/api';
 import { gapi } from 'gapi-script';
@@ -8,10 +8,8 @@ import GoogleIcon from '@mui/icons-material/Google';
 
 const clientId = '890593488111-o10mtf4ka43e97vdnntv1cev714ipo64.apps.googleusercontent.com';
 
-function GoogleLoginButton(props) {
-  console.log("props")
+function GoogleLoginButton() {
 
-  console.log(props)
   useEffect(() => {
     function start() {
       gapi.client.init({
@@ -22,23 +20,42 @@ function GoogleLoginButton(props) {
 
     gapi.load('client:auth2', start);
   }, []);
+  
 
   const navigate = useNavigate();
+  let channel_id;
 
   const onSuccess = (response) => {
     const { accessToken } = response;
-    props.onSuccess(response);
     console.log(accessToken)
-
-    const a = httpRequest('https://cdeopcczr2.execute-api.ap-southeast-2.amazonaws.com/dev/channels', 'POST', { headers: accessToken }, { 'Content-Type': 'application/json' })
-      console.log("issue")  
-      console.log(a)
-      // a.then(d=>console.log(d))
-      a.then(d=>props.onChannelList(d))
-      navigate('/questionPage');
-     
   
+    const a = httpRequest('https://cdeopcczr2.execute-api.ap-southeast-2.amazonaws.com/dev/channels', 'POST', { headers: accessToken }, { 'Content-Type': 'application/json' });
+    console.log("issue")  
+    console.log(a);
+    
+    a.then((result) => {
+      // Access the value from the fulfilled Promise
+      const channel_id = Object.keys(result)[0];
+      console.log(Object.keys(result)[0]);
+      console.log("my channel i");
+      console.log(channel_id);
+  
+      console.log("issue1") 
+      console.log(channel_id)
+      console.log("issue2") 
+      
+      return httpRequest('https://cdeopcczr2.execute-api.ap-southeast-2.amazonaws.com/dev/analytics', 'POST', { 'channelId': channel_id, headers: accessToken }, { 'Content-Type': 'application/json' });
+    })
+    .then(() => {
+      // Code to execute after the second request completes successfully
+      navigate('/questionPage');
+    })
+    .catch((error) => {
+      // Handle any errors that occurred during the Promise execution
+      console.error(error);
+    });
   }
+  
 
   const onFailure = (error) => {
     console.log("no token")
