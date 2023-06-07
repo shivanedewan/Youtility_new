@@ -9,6 +9,7 @@ import QuestionPage from "./pages/QuestionPage";
 import Home from "./pages/Home";
 import { useEffect } from "react";
 
+
 function App() {
   const action = useNavigationType();
   const location = useLocation();

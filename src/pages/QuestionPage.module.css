@@ -4,10 +4,10 @@
   line-height: 22px;
 }
 .chatBubblesenddefault {
-  flex: 1;
+  flex: 0 1 auto;
   border-radius: var(--br-xs) var(--br-xs) var(--br-xs) var(--br-9xs);
   background-color: var(--black-and-white-white);
-  height: 56px;
+  /* height: 56px; */
   overflow: hidden;
   display: flex;
   flex-direction: row;
@@ -28,18 +28,24 @@
   padding: 0 42px 0 0;
   align-items: center;
   justify-content: flex-start;
-  gap: 19px;
+  gap: 100px;
+  /* background-color: #202325; */
 }
 .asAnAi {
   align-self: stretch;
   position: relative;
   line-height: 22px;
+  /* background-color: #202325; */
 }
 .chatBubblerecevedreceivedChild {
   position: relative;
   background-color: var(--others-borders);
+  /* background-color: #202325; */
   width: 319px;
   height: 2px;
+  align-items: right;
+  justify-content: flex-end;
+  
 }
 .iconoutlinelike {
   position: relative;
@@ -69,6 +75,7 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  
 }
 .iconfillclipboardParent {
   justify-content: flex-start;
@@ -84,15 +91,26 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  /* background-color: #202325; */
 }
 .chatBubblerecevedreceived {
   align-self: stretch;
   border-radius: var(--br-xs) var(--br-xs) var(--br-xs) var(--br-9xs);
   background-color: var(--others-text-bg);
+  /* background-color: #202325; */
   overflow: hidden;
   padding: var(--padding-xs);
   justify-content: center;
-  gap: 16px;
+  width: auto;
+  /* gap: 16px; */
+  display: block;
+  margin-left:10px;
+  margin-right: 40px;
+  align-self: flex-end;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  white-space: pre-line;
+  
 }
 .frameParent {
   position: absolute;
@@ -238,9 +256,9 @@
   height: 55px;
 }
 .frameContainer {
-  position: absolute;
+  position: fixed;
   width: 90.32%;
-  top: 671px;
+  bottom: 0;
   right: 5.41%;
   left: 4.27%;
   display: flex;
@@ -254,7 +272,7 @@
   position: relative;
   background-color: var(--others-screen-bg);
   width: 100%;
-  height: 812px;
+  height: 850px;
   overflow: hidden;
   text-align: left;
   font-size: var(--app-body-size);
@@ -263,6 +281,23 @@
 }
 
 .conversationContainer {
-  height: 400px; /* Adjust the height as per your requirement */
+  height: 650px; /* Adjust the height as per your requirement */
   overflow-y: auto;
+  /* background-color: #202325; */
 }
+
+.suggestionsList {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  /* background-color: #f1f1f1; */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.suggestionsList li {
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+

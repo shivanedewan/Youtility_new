@@ -1,6 +1,9 @@
 import styles from "./Home.module.css";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { GoogleOAuthProvider, Google ,useAuth} from '@react-oauth/google';
+import HomeButton from "./HomeButton";
+import GoogleLogoutButton from "./GoogleLogoutButton";
+
 
 const Home = () => {
   return (
@@ -8,7 +11,7 @@ const Home = () => {
     <div className={styles.home}>
       <div className={styles.yourYoutubeAiAssistantWrapper}>
         <b className={styles.yourYoutubeAiContainer}>
-          <p className={styles.yourYoutubeAi}>{`Your Youtube AI `}</p>
+          <p className={styles.yourYoutubeAi}>{`Your Youtube AI`}</p>
           <p className={styles.yourYoutubeAi}> Assistant</p>
         </b>
       </div>
@@ -22,8 +25,10 @@ const Home = () => {
        
         <GoogleLoginButton />
       </div>
-      <img className={styles.userCirleIcon} alt="" src="/usercirle.svg" />
-      <img className={styles.iconfillmenu} alt="" src="/iconfillmenu1.svg" />
+      <HomeButton/>
+      {/* <img className={styles.userCirleIcon} alt="" src="/usercirle.svg" />
+      <img className={styles.iconfillmenu} alt="" src="/iconfillmenu1.svg" /> */}
+      {/* <GoogleLogoutButton/> */}
     </div>
     </GoogleOAuthProvider>
   );

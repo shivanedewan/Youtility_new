@@ -3,12 +3,12 @@ const First = () => {
   return (
     <main className={styles.first}>
       <div className={styles.backgroundColor} />
-      <div className={styles.alreadyHaveAnContainer}>
+      {/* <div className={styles.alreadyHaveAnContainer}>
         <span
           className={styles.alreadyHaveAn}
         >{`Already have an account? `}</span>
         <b className={styles.signIn}>Sign In</b>
-      </div>
+      </div> */}
       <img
         className={styles.welcomeShadowIcon}
         alt=""

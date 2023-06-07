@@ -2,10 +2,22 @@ import React, { useState, useRef } from 'react';
 import styles from './QuestionPage.module.css';
 
 import httpRequest from '../services/api';
+import HomeButton from './HomeButton';
+import GoogleLogoutButton from "./GoogleLogoutButton";
+import { Typography,InputAdornment, IconButton, TextField,ListItemText,ListItem, Divider, Box, createTheme, CircularProgress } from '@mui/material';
+
+import Autocomplete from '@mui/material/Autocomplete';
+import { Send } from '@mui/icons-material';
+
+
+
 
 const QuestionPage = () => {
-  const [conversation, setConversation] = useState([
-  ]);
+  const [conversation, setConversation] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  const [inputValue, setInputValue] = useState('');
+
   const [isTyping, setIsTyping] = useState(false);
   const inputRef = useRef(null);
   const [channelId, setChannelid] = useState('');
@@ -13,12 +25,19 @@ const QuestionPage = () => {
   const handleAskMeAnythingClick = () => {
     setIsTyping(true);
     inputRef.current.focus();
+    setShowSuggestions(true);
   };
 
+  const handleSuggestionClick = (suggestion) => {
+    setInputValue(suggestion);
+    setShowSuggestions(false);
+  };
   const handleInputKeyPress = async (event) => {
     let userMessage='';
     if (event.key === 'Enter' || event.type === 'click' ){
       const userMessage = inputRef.current.value.trim();
+      console.log("userMessage")
+      console.log(userMessage)
       if (userMessage !== '') {
         setConversation((prevConversation) => [
           ...prevConversation,
@@ -32,13 +51,14 @@ const QuestionPage = () => {
     let channel_id='UCcA80NqKraq7phtzMMgP4nw';
     setChannelid('UCcA80NqKraq7phtzMMgP4nw')
     const e = await httpRequest('https://cdeopcczr2.execute-api.ap-southeast-2.amazonaws.com/dev/question', 'POST', { 'retry':false,'question': userMessage, 'channelId': channel_id, 'accessToken': accessToken }, { 'Content-Type': 'application/json' });
+    
     await fetchAns();
   };
+
   const fetchAns = async () => {
     const timeout = 1800000; 
     const retryInterval = 10000; // 10 seconds (modified value)
     const startTime = Date.now();
-    let retryCount = 0;
   
     while (Date.now() - startTime < timeout) {
       try {
@@ -51,17 +71,23 @@ const QuestionPage = () => {
         );
   
         const response = await requestPromise;
+        console.log("response.data")
+        console.log(response.data)
   
         if (response && response.data) {
           const ans = response.data;
+          
           console.log("issub1")
           console.log(response.data)
           console.log("issub2")
           // setPT(Date.now() - startTime)
-          setConversation((prevConversation) => [
-            ...prevConversation,
-            { sender: 'bot', message: ans },
-          ]);
+
+          console.log("and")
+          console.log(ans)
+            setConversation((prevConversation) => [
+              ...prevConversation,
+              { sender: 'bot', message: ans },
+            ]);
           console.log("Received ans:", ans);
           return; // Exit the function since we received the answer
           
@@ -86,75 +112,130 @@ const QuestionPage = () => {
     throw new Error("Request timeout"); // Throw an error if no response received within one minute
   };
   
+  const Suggestions = [
+    "Help me identify any issues in my channel and provide suggestions for improvement?",
+    "Determine the demographic of people who are enjoying my videos?",
+    "Why some of my videos aren't very popular. Any insights or suggestions?",
+    "What strategies do you recommend that would be effective for my channel?",
+    "Which days would be the best for me to upload my videos considering the analysis of engagement and views?",
+    "Aanalyze my videos and let me know which types are receiving the most views.",
+    "Based on the comparative analysis, what successful strategies or areas for improvement can you identify for my channel?",
+    "Can you provide insights on the traffic sources that are driving viewers to my channel and suggest strategies to optimize promotion?",
+    "What actions can I take to improve viewer retention and keep my audience engaged throughout my videos?",
+    "Could you elaborate on the types of videos that are receiving more views and provide further insights on what makes them successful?",
+    "What is the ideal video length that I should aim for to maximize viewer engagement?",
+    "How can I optimize my video thumbnails to increase click-through rates and attract more viewers?",
+    "Are there any specific trends or emerging topics that you recommend I explore in my content creation?",
+    "Can you suggest any tools or resources that would be helpful for implementing the recommended strategies?"
+  ];
+  const handleInputChange = (event, value) => {
+    console.log("getting clled now")
+    setInputValue(value || event.target.value);
+  };
 
   return (
     <div className={styles.questionPage}>
-      <div className={styles.frameParent}>
-      <div className={styles.conversationContainer}>
-
-        {conversation.map((message, index) => (
-          <div
-            key={index}
-            className={
-              message.sender === 'user' ? styles.chatBubblesenddefaultParent : styles.chatBubblerecevedreceived
-            }
-          >
+  <div className={styles.frameParent}>
+    <div className={styles.conversationContainer}>
+      {conversation.map((message, index) => (
+        <div
+          key={index}
+          className={
+            message.sender === 'user' ? styles.chatBubblesenddefaultParent : styles.chatBubblerecevedreceived
+          }
+        >
+          {message.sender === 'user' ? (
             <div className={styles.chatBubblesenddefault}>
               <div className={styles.howAreYou}>{message.message}</div>
             </div>
-            {message.sender === 'user' ? (
-              <img className={styles.iconfilledit} alt="" src="/iconfilledit.svg" />
-            ) : (
-              <>
-                <div className={styles.asAnAi}>{message.message}</div>
-                <div className={styles.chatBubblerecevedreceivedChild} />
-                <div className={styles.frameGroup}>
-                  <div className={styles.iconoutlinelikeParent}>
-                    <img className={styles.iconoutlinelike} alt="" src="/iconoutlinelike.svg" />
-                    <img className={styles.iconoutlinelike} alt="" src="/iconoutlinedislike.svg" />
-                  </div>
-                  <div className={styles.iconfillclipboardParent}>
-                    <img className={styles.iconfillclipboard} alt="" src="/iconfillclipboard.svg" />
-                    <div className={styles.copy}>Copy</div>
-                  </div>
+          ) : (
+            <>
+              <div className={styles.asAnAi}>{message.message}</div>
+              <div className={styles.chatBubblerecevedreceivedChild} />
+              <div className={styles.frameGroup}>
+                <div className={styles.iconoutlinelikeParent}>
+                  <img className={styles.iconoutlinelike} alt="" src="/iconoutlinelike.svg" />
+                  <img className={styles.iconoutlinelike} alt="" src="/iconoutlinedislike.svg" />
                 </div>
-              </>
-            )}
-          </div>
-        ))}
-         </div>
-      </div>
-      <div className={styles.iconfillmenuParent}>
-        <img className={styles.iconfillmenu} alt="" src="/iconfillmenu.svg" />
-        <div className={styles.fitbot}>
-          <img className={styles.avatarIcon} alt="" src="/avatar.svg" />
-          <div className={styles.nameActivity}>
-            <b className={styles.youtility}>Youtility</b>
-            <div className={styles.alwaysActive}>
-              <div className={styles.alwaysActiveChild} />
-              <div className={styles.alwaysActive1}>Always active</div>
-            </div>
-          </div>
+                <div className={styles.iconfillclipboardParent}>
+                  <img className={styles.iconfillclipboard} alt="" src="/iconfillclipboard.svg" />
+                  <div className={styles.copy}>Copy</div>
+                </div>
+              </div>
+            </>
+          )}
         </div>
-
-        <img className={styles.hugeIconusersoliduserCirc} alt="" src="/hugeiconusersolidusercircle.svg" />
+      ))}
+    </div>
+  </div>
+  <div className={styles.iconfillmenuParent}>
+    {/* <img className={styles.iconfillmenu} alt="" src="/iconfillmenu.svg" /> */}
+    <HomeButton />
+    <div className={styles.fitbot}>
+      <img className={styles.avatarIcon} alt="" src="/avatar.svg" />
+      <div className={styles.nameActivity}>
+        <b className={styles.youtility}>Youtility</b>
+        <div className={styles.alwaysActive}>
+          <div className={styles.alwaysActiveChild} />
+          <div className={styles.alwaysActive1}>Always active</div>
+        </div>
       </div>
-      <img className={styles.vectorIcon} alt="" src="/vector.svg" />
-      <div className={styles.frameContainer}>
-
-      <input
+      {/* <GoogleLogoutButton/> */}
+    </div>
+    <GoogleLogoutButton className={styles.hugeIconusersoliduserCirc}/>
+    {/* <img className={styles.hugeIconusersoliduserCirc} alt=""  /> */}
+  </div>
+  <img className={styles.vectorIcon} alt="" src="/vector.svg" />
+  <div className={styles.frameContainer}>
+    <input
+      ref={inputRef}
+      className={`${styles.askMeAnythingParent} ${isTyping ? styles.typing : ''}`}
+      onClick={handleAskMeAnythingClick}
+      contentEditable={isTyping}
+      placeholder={isTyping ? null : 'Ask me anything...'}
+    />
+     
+     {/* <Box sx={{  position: 'fixed', alignItems: 'center', width: '100%', bottom: 0, left: 0 }}>
+      <Autocomplete
+        freeSolo
+        options={Suggestions}
+        onInputChange={handleInputChange}
+        renderInput={(params) => (
+      <TextField
+      {...params}
+        variant="outlined"
+        width='400px'
+        label="Type your message"
         ref={inputRef}
-        className={`${styles.askMeAnythingParent} ${isTyping ? styles.typing : ''}`}
-        onClick={handleAskMeAnythingClick}
-        contentEditable={isTyping}
-        placeholder={isTyping ? null : 'Ask me anything...'}
-      />
-      <img className={styles.sendIcon} alt="" src="/send.svg" onClick={handleInputKeyPress} />
-   
+        value={inputValue}
+        onChange={handleAskMeAnythingClick}
+        onKeyDown={handleAskMeAnythingClick}
+        placeholder={Suggestions[Math.floor(Math.random() * Suggestions.length)]}
+        clearOnBlur
+        InputProps={{
+            ...params.InputProps,
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={handleInputKeyPress}>
+                <Send />
+              </IconButton>
+            </InputAdornment>
+          ),
+          sx: { borderRadius: '50px' }
+        }}
+        sx={{
+          width: '100%',
+          marginRight: '8px',
+          '& .Mui-focused': {
+            backgroundColor: '#FFFFFF'
+          }
+        }}
+      />)}/>
+      </Box> */}
+    <img className={styles.sendIcon} alt="" src="/send.svg" onClick={handleInputKeyPress} />
+  </div>
+</div>
 
-    </div>
-
-    </div>
   );
 };
 

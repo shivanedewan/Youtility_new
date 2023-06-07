@@ -34,31 +34,19 @@ function GoogleLoginButton() {
     console.log(a);
     
     a.then((result) => {
-      // Access the value from the fulfilled Promise
-      const channel_id = Object.keys(result)[0];
-      console.log(Object.keys(result)[0]);
-      console.log("my channel i");
-      console.log(channel_id);
-  
-      console.log("issue1") 
-      console.log(channel_id)
-      console.log("issue2") 
-      
+      const channel_id = result.id;
       return httpRequest('https://cdeopcczr2.execute-api.ap-southeast-2.amazonaws.com/dev/analytics', 'POST', { 'channelId': channel_id, headers: accessToken }, { 'Content-Type': 'application/json' });
     })
     .then(() => {
-      // Code to execute after the second request completes successfully
       navigate('/questionPage');
     })
     .catch((error) => {
-      // Handle any errors that occurred during the Promise execution
       console.error(error);
     });
   }
   
 
   const onFailure = (error) => {
-    console.log("no token")
     console.error(error)
   }
 

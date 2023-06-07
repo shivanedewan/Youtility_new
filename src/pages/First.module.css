@@ -4,7 +4,7 @@
   top: 0;
   right: 0;
   left: 0;
-  background-color: #f7f6fb;
+  /* background-color: #7364b0; */
   height: 812px;
 }
 .alreadyHaveAn {
@@ -312,11 +312,12 @@
   object-fit: cover;
 }
 .first {
-  position: relative;
+  position: fixed;
   background-color: var(--others-text-bg);
-  height: 812px;
+  height: 850px;
   mix-blend-mode: normal;
   text-align: center;
+  /* background-color: aquamarine; */
   font-size: 13px;
   color: var(--color-darkgray-100);
   font-family: var(--font-nunito-sans);
