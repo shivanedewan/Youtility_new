@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import styles from './QuestionPage.module.css';
+import { useLocation } from 'react-router-dom';
 
 import httpRequest from '../services/api';
 import HomeButton from './HomeButton';
@@ -8,11 +9,14 @@ import { Typography,InputAdornment, IconButton, TextField,ListItemText,ListItem,
 
 import Autocomplete from '@mui/material/Autocomplete';
 import { Send } from '@mui/icons-material';
+import { CircularProgress as MuiCircularProgress } from '@mui/material';
+
 
 
 
 
 const QuestionPage = () => {
+  const location = useLocation();
   const [conversation, setConversation] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
@@ -21,6 +25,18 @@ const QuestionPage = () => {
   const [isTyping, setIsTyping] = useState(false);
   const inputRef = useRef(null);
   const [channelId, setChannelid] = useState('');
+  const [loading, setLoading] = useState(false);
+  console.log(location)
+  const { accessToken } = location.state;
+  console.log(accessToken)
+  
+  const channel_id = accessToken.data.channelId
+  const access_token = accessToken.data.headers
+  console.log("my chanel if and access")
+  console.log(access_token)
+  console.log(channel_id)
+  console.log("my chanel if and access1")
+
 
   const handleAskMeAnythingClick = () => {
     setIsTyping(true);
@@ -46,17 +62,19 @@ const QuestionPage = () => {
         inputRef.current.value = ''; 
       }
       setIsTyping(false);
+      setLoading(true);
+
     }
-    let accessToken='ya29.a0AWY7CkmrQ3nWhGC6G7N-px0a95H78T-ELzndBwC0jD6k0ZFm5Uvqd3JDWM9OufpogPquVXTm6QfolTxsZB90hIxBNx-5gIa4Wo5yRbGsh5GGoH9FMXGoHl3YgE1upoJ2pQsR8wsDhMk0afnmHZFwjUJeJID6-QaCgYKAT0SARMSFQG1tDrpM8-_O_zm4_Wh7mskzYHKlA0165';
-    let channel_id='UCcA80NqKraq7phtzMMgP4nw';
-    setChannelid('UCcA80NqKraq7phtzMMgP4nw')
-    const e = await httpRequest('https://cdeopcczr2.execute-api.ap-southeast-2.amazonaws.com/dev/question', 'POST', { 'retry':false,'question': userMessage, 'channelId': channel_id, 'accessToken': accessToken }, { 'Content-Type': 'application/json' });
+    // let accessToken='ya29.a0AWY7CkmrQ3nWhGC6G7N-px0a95H78T-ELzndBwC0jD6k0ZFm5Uvqd3JDWM9OufpogPquVXTm6QfolTxsZB90hIxBNx-5gIa4Wo5yRbGsh5GGoH9FMXGoHl3YgE1upoJ2pQsR8wsDhMk0afnmHZFwjUJeJID6-QaCgYKAT0SARMSFQG1tDrpM8-_O_zm4_Wh7mskzYHKlA0165';
+    // let channel_id='UCcA80NqKraq7phtzMMgP4nw';
+    setChannelid(channel_id)
+    const e = await httpRequest('https://cdeopcczr2.execute-api.ap-southeast-2.amazonaws.com/dev/question', 'POST', { 'retry':false,'question': userMessage, 'channelId': channel_id, 'accessToken': access_token }, { 'Content-Type': 'application/json' });
     
     await fetchAns();
   };
 
   const fetchAns = async () => {
-    const timeout = 1800000; 
+    const timeout =  120000; 
     const retryInterval = 10000; // 10 seconds (modified value)
     const startTime = Date.now();
   
@@ -89,11 +107,13 @@ const QuestionPage = () => {
               { sender: 'bot', message: ans },
             ]);
           console.log("Received ans:", ans);
+          setLoading(false);
+
           return; // Exit the function since we received the answer
           
         }
         else if (response.status === 500) {
-            setError("AI not able to process the request right now")
+            console.log("AI not able to process the request right now")
         } 
         else {
           console.log("Request submitted");
@@ -108,7 +128,7 @@ const QuestionPage = () => {
     }
     setLoading(false)
     
-    setError("Errir while processing your request")
+    console.log("Errir while processing your request")
     throw new Error("Request timeout"); // Throw an error if no response received within one minute
   };
   
@@ -194,45 +214,14 @@ const QuestionPage = () => {
       contentEditable={isTyping}
       placeholder={isTyping ? null : 'Ask me anything...'}
     />
+      {loading && !isTyping ? (
+  <div className={styles.loadingIndicator}>
+    <MuiCircularProgress size={24} />
+  </div>
+) : (
+  <img className={styles.sendIcon} alt="" src="/send.svg" onClick={handleInputKeyPress} />
+)}
      
-     {/* <Box sx={{  position: 'fixed', alignItems: 'center', width: '100%', bottom: 0, left: 0 }}>
-      <Autocomplete
-        freeSolo
-        options={Suggestions}
-        onInputChange={handleInputChange}
-        renderInput={(params) => (
-      <TextField
-      {...params}
-        variant="outlined"
-        width='400px'
-        label="Type your message"
-        ref={inputRef}
-        value={inputValue}
-        onChange={handleAskMeAnythingClick}
-        onKeyDown={handleAskMeAnythingClick}
-        placeholder={Suggestions[Math.floor(Math.random() * Suggestions.length)]}
-        clearOnBlur
-        InputProps={{
-            ...params.InputProps,
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton onClick={handleInputKeyPress}>
-                <Send />
-              </IconButton>
-            </InputAdornment>
-          ),
-          sx: { borderRadius: '50px' }
-        }}
-        sx={{
-          width: '100%',
-          marginRight: '8px',
-          '& .Mui-focused': {
-            backgroundColor: '#FFFFFF'
-          }
-        }}
-      />)}/>
-      </Box> */}
-    <img className={styles.sendIcon} alt="" src="/send.svg" onClick={handleInputKeyPress} />
   </div>
 </div>
 

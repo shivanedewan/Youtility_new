@@ -25,18 +25,18 @@
 .welcomeShadowIcon {
   position: absolute;
   max-width: 100%;
-  overflow: hidden;
+  /* overflow: hidden; */
   max-height: 100%;
-  object-fit: cover;
+  /* object-fit: cover; */
 }
 .welcomeShadowIcon {
   height: 1.35%;
   width: 54.93%;
-  top: 33.62%;
-  right: 28%;
+  /* top: 33.62%; */
+  /* right: 28%; */
   bottom: 65.02%;
   left: 17.07%;
-  mix-blend-mode: normal;
+  /* mix-blend-mode: normal; */
 }
 .ball1Copy,
 .ball1Icon,
@@ -314,11 +314,11 @@
 .first {
   position: fixed;
   background-color: var(--others-text-bg);
-  height: 850px;
-  mix-blend-mode: normal;
+  height: 100%;
+  /* mix-blend-mode: normal; */
   text-align: center;
   /* background-color: aquamarine; */
-  font-size: 13px;
+  /* font-size: 30px; */
   color: var(--color-darkgray-100);
   font-family: var(--font-nunito-sans);
 }

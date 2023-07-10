@@ -29,16 +29,14 @@ function GoogleLoginButton() {
     const { accessToken } = response;
     console.log(accessToken)
   
-    const a = httpRequest('https://cdeopcczr2.execute-api.ap-southeast-2.amazonaws.com/dev/channels', 'POST', { headers: accessToken }, { 'Content-Type': 'application/json' });
-    console.log("issue")  
-    console.log(a);
+    // const a = httpRequest('https://cdeopcczr2.execute-api.ap-southeast-2.amazonaws.com/dev/channels', 'POST', { headers: accessToken }, { 'Content-Type': 'application/json' });
     
-    a.then((result) => {
-      const channel_id = result.id;
-      return httpRequest('https://cdeopcczr2.execute-api.ap-southeast-2.amazonaws.com/dev/analytics', 'POST', { 'channelId': channel_id, headers: accessToken }, { 'Content-Type': 'application/json' });
-    })
-    .then(() => {
-      navigate('/questionPage');
+    // a.then((result) => {
+    //   const channel_id = result.id;
+    const a=httpRequest('https://cdeopcczr2.execute-api.ap-southeast-2.amazonaws.com/dev/fetch_data', 'POST', { 'channelId': channel_id, headers: accessToken }, { 'Content-Type': 'application/json' });
+    // })
+    a.then((accessToken, channel_id ) => {
+      navigate('/questionPage', { state: { accessToken, channel_id } });
     })
     .catch((error) => {
       console.error(error);

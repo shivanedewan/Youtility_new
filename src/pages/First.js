@@ -1,20 +1,16 @@
 import styles from "./First.module.css";
+import {Box} from '@mui/material';
 const First = () => {
   return (
-    <main className={styles.first}>
-      <div className={styles.backgroundColor} />
-      {/* <div className={styles.alreadyHaveAnContainer}>
-        <span
-          className={styles.alreadyHaveAn}
-        >{`Already have an account? `}</span>
-        <b className={styles.signIn}>Sign In</b>
-      </div> */}
+    <Box className={styles.first}>
+      <Box>
       <img
         className={styles.welcomeShadowIcon}
         alt=""
         src="/welcome-shadow@2x.png"
       />
-      <div className={styles.partyConfettis}>
+      </Box>
+      <Box className={styles.partyConfettis}>
         <img className={styles.ball1Icon} alt="" src="/ball-1@2x.png" />
         <img className={styles.ball1Copy} alt="" src="/ball-1-copy@2x.png" />
         <img className={styles.ball2Icon} alt="" src="/ball-2@2x.png" />
@@ -39,15 +35,15 @@ const First = () => {
           alt=""
           src="/star-1@2x.png"
         />
-      </div>
-      <div className={styles.youtilityParent} id="title">
-        <div className={styles.youtility}>YOUTILITY</div>
+      </Box>
+      <Box className={styles.youtilityParent} id="title">
+        <Box className={styles.youtility}>YOUTILITY</Box>
         <b className={styles.unleashYourYoutubeContainer}>
           <p className={styles.unleashYourYoutube}>UNLEASH YOUR YOUTUBE</p>
           <p className={styles.unleashYourYoutube}> POTENTIAL WITH REAL</p>
           <p className={styles.unleashYourYoutube}>{`TIME ANALYTICS CHAT `}</p>
         </b>
-        <div className={styles.superchargeYourChannelContainer}>
+        <Box className={styles.superchargeYourChannelContainer}>
           <p className={styles.superchargeYourChannel}>
             SUPERCHARGE YOUR CHANNEL WITH REAL
           </p>
@@ -56,20 +52,20 @@ const First = () => {
             GAIN NEW AND INTERESTING INSIGHTS
           </p>
           <p className={styles.unleashYourYoutube}>ASK QUESTIONS AND GROWW</p>
-        </div>
+        </Box>
         <a href="/home">
-        <div className={styles.greenRectangle}>
+        <Box className={styles.greenRectangle}>
           <img
             className={styles.greenRectangleIcon}
             alt=""
             src="/green-rectangle.svg"
           />
           <button className={styles.getStarted}>Get Started</button>
-        </div>
+        </Box>
         </a>
-      </div>
+      </Box>
       <img className={styles.image1Icon} alt="" src="/image-1@2x.png" />
-    </main>
+    </Box>
   );
 };
 
